@@ -1,3 +1,5 @@
+import java.net.URI
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -72,8 +74,22 @@ android {
     }
 }
 
+val clientSdkVersion = "v0.9.0-dev.1"
+val clientSdkDir = layout.projectDirectory.dir("libs").asFile
+val clientSdkAar = clientSdkDir.resolve("client-sdk-$clientSdkVersion.aar")
+
+if (!clientSdkAar.exists()) {
+    clientSdkDir.mkdirs()
+    val downloadUrl = "https://github.com/PDS-PersonalDataStore/pds-android/releases/download/$clientSdkVersion/client-sdk-release.aar"
+    URI(downloadUrl).toURL().openStream().use { input ->
+        clientSdkAar.outputStream().use { output ->
+            input.copyTo(output)
+        }
+    }
+}
+
 dependencies {
-    implementation("top.tau2c.pds:client-sdk:0.9.0-dev.1")
+    implementation(files(clientSdkAar))
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
