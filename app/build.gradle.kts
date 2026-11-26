@@ -74,7 +74,7 @@ android {
     }
 }
 
-val clientSdkVersion = "v0.9.0-dev.1"
+val clientSdkVersion = "v0.9.0-dev.2"
 val clientSdkDir = layout.projectDirectory.dir("libs").asFile
 val clientSdkAar = clientSdkDir.resolve("client-sdk-$clientSdkVersion.aar")
 
