@@ -62,6 +62,7 @@ jobs:
 
     permissions:
       contents: write
+      packages: read
 
     steps:
       - name: Checkout repository
@@ -91,11 +92,13 @@ jobs:
             echo "KEYSTORE_PATH=${GITHUB_WORKSPACE}/release.keystore" >> $GITHUB_ENV
           fi
 
-      - name: Build APK and Client SDK AAR
+      - name: Build APK
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
         run: |
           gradle assembleRelease --stacktrace
 
@@ -103,7 +106,6 @@ jobs:
         run: |
           mkdir -p release-artifacts
           find . -name "*.apk" -exec cp {} release-artifacts/ \;
-          find . -name "*.aar" -exec cp {} release-artifacts/ \;
           ls -la release-artifacts/
 
       - name: Create GitHub Release

@@ -65,6 +65,10 @@ jobs:
     needs: build-native
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: read
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -85,5 +89,8 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
       - name: Run Tests and Build Packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
         run: |
           gradle check assembleRelease --stacktrace
