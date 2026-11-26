@@ -73,6 +73,7 @@ android {
 }
 
 dependencies {
+    implementation("top.tau2c.pds:client-sdk:0.9.0-dev.1")
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
